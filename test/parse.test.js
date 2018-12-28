@@ -77,7 +77,9 @@ describe('Parse ', function () {
           if(err) return done(err);
           expect(result).to.contain.all.keys('declarant1')
           expect(result.foyerFiscal).to.deep.equal({
-            adresse: '34 RUE DE L\'EGLISE 75009 PARIS',
+            adresse: '34 RUE DE L\'EGLISE',
+            complement:'',
+            ville:'75009 PARIS',
             annee: 2015
           });
           done();
@@ -216,7 +218,9 @@ describe('Parse ', function () {
           if(err) return done(err);
           expect(result).to.contain.all.keys('declarant1')
           expect(result.foyerFiscal).to.deep.equal({
-            adresse: 'APT. 509 47 rue de carnot 94320 THIAIS',
+            adresse: '47 rue de carnot',
+            complement: 'APT. 509',
+            ville: '94320 THIAIS',
             annee: 2014
           });
           done();

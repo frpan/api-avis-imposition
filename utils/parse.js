@@ -106,19 +106,28 @@ module.exports.result = function parseResult(html, year, callback) {
     }
   })
 
-  var adress = []
-  var adressRowNumbers = [5,6,7]
-  adressRowNumbers.forEach(function (n) {
+  result.foyerFiscal = {
+    annee : year
+  }
+
+  // on teste si l'adresse est composé de 3 TR (complement, adresse, codepostal + ville)
+  var has3TrNode = docRow[7].getElementsByTagName('td')[1];
+  var has3Tr = (has3TrNode && has3TrNode.firstChild);
+
+  // en fonction du nombre de tr on assossie la bonne variable
+  var foyerFiscalRows = {
+        complement: has3Tr?5:7,
+        adresse:has3Tr?6:5,
+        ville:has3Tr?7:6
+      };
+
+
+  Object.keys(foyerFiscalRows).forEach(function (k) {
+    var n = foyerFiscalRows[k]
     var node = docRow[n].getElementsByTagName('td')[1]
-    if (node && node.firstChild) {
-      adress.push(node.firstChild.data)
-    }
+    result.foyerFiscal[k] = (node && node.firstChild) ? node.firstChild.data : '';
   })
 
-  result.foyerFiscal = {
-    annee: year,
-    adresse: adress.join(' ')
-  };
 
   var nodeAnnee = select('//*[@class="titre_affiche_avis"]//h:span', doc)
   if (nodeAnnee.length > 0) {
